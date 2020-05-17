@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--namespace定义这个映射和哪个接口关联-->
+<mapper namespace="com.example.demo.dao.ICategoryDao">
+    <!--关系映射-->
+    <resultMap id="baseMap" type="com.example.demo.dto.Category">
+        <result column="id" property="id"/>
+        <result column="text" property="text"/>
+        <result column="parent" property="parent"/>
+    </resultMap>
+
+    <!--模糊查询功能-->
+    <select id="findByProp" parameterType="java.util.Map" resultMap="baseMap">
+        select * from bookcategory
+        <where>
+            <if test="id!=null">
+                id like concat('%',concat(#{id},'%'))
+            </if>
+            <if test="text!=null">
+                and text like concat('%',concat(#{text},'%'))
+            </if>
+            <if test="parent!=null">
+                and parent like concat('%',concat(#{parent},'%'))
+            </if>
+        </where>
+
+    </select>
+
+    <!--精确查询功能-->
+    <select id="findOneByProp" parameterType="java.util.Map" resultMap="baseMap">
+
+        select * from bookcategory
+
+        <where>
+            <if test="id!=null">
+                id =#{id}
+            </if>
+            <if test="text!=null">
+                and text =#{text}
+            </if>
+            <if test="parent!=null">
+                and parent =#{parent}
+            </if>
+        </where>
+
+    </select>
+    <select id="findOneByPropID" parameterType="java.lang.String" resultMap="baseMap" >
+
+        select * from bookcategory
+
+        <where>
+                id =#{id}
+        </where>
+
+    </select>
+    <!--添加功能-->
+    <insert id="add" parameterType="com.example.demo.dto.Category">
+        INSERT INTO
+        bookcategory
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="text!=null">
+                text,
+            </if>
+            <if test="parent!=null">
+                parent
+            </if>
+        </trim>
+
+        <trim prefix="  values(" suffix=")" suffixOverrides=",">
+            <if test="text!=null">
+                #{text},
+            </if>
+            <if test="parent!=null">
+                #{parent}
+            </if>
+        </trim>
+    </insert>
+
+    <!--修改功能-->
+    <update id="update" parameterType="com.example.demo.dto.Category">
+        UPDATE
+        bookcategory
+        <set>
+            <if test="text!=null">
+                text=#{text},
+            </if>
+            <if test="parent!=null">
+                parent=#{parent}
+            </if>
+        </set>
+        WHERE id=#{id}
+    </update>
+
+
+    <delete id="delete" parameterType="java.lang.String">
+        delete FROM
+        bookcategory
+        WHERE
+        id=#{id}
+    </delete>
+
+<!--批量删除-->
+    <delete id="deleteAll" parameterType="list">
+        delete from bookcategory where id in
+        <foreach collection="list" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </delete>
+
+
+</mapper>

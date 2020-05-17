@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--namespace定义这个映射和哪个接口关联-->
+<mapper namespace="com.example.demo.dao.IOrderitemDao">
+    <!--关系映射-->
+    <resultMap id="baseMap" type="com.example.demo.dto.OrderItem">
+        <result column="id" property="id"/>
+        <result column="image" property="image"/>
+        <result column="name" property="name"/>
+        <result column="price" property="price"/>
+        <result column="count" property="count"/>
+        <result column="status" property="status"/>
+        <result column="sellerID" property="sellerID"/>
+        <result column="customerID" property="customerID"/>
+        <association property="goodsID" javaType="com.example.demo.dto.Goods" column="goodsID"  select="com.example.demo.dao.IGoodsDao.findOneByPropID"/>
+        <association property="orderID" javaType="com.example.demo.dto.TOrder" column="orderID" select="com.example.demo.dao.ITOrderDao.findOneByPropID"/>
+
+    </resultMap>
+
+    <!--模糊查询功能-->
+    <select id="findByProp" parameterType="java.util.Map" resultMap="baseMap">
+        select * from orderitem
+        <where>
+            <if test="id!=null">
+                id like concat('%',concat(#{id},'%'))
+            </if>
+            <if test="image!=null">
+                and image like concat('%',concat(#{image},'%'))
+            </if>
+            <if test="name!=null">
+                and name like concat('%',concat(#{name},'%'))
+            </if>
+            <if test="price!=null">
+                and price like concat('%',concat(#{price},'%'))
+            </if>
+            <if test="count!=null">
+                and count like concat('%',concat(#{count},'%'))
+            </if>
+            <if test="goodsID!=null">
+            and goodsID like concat('%',concat(#{goodsID},'%'))
+        </if>
+            <if test="orderID!=null">
+                and orderID like concat('%',concat(#{orderID},'%'))
+            </if>
+            <if test="status!=null">
+                and status like concat('%',concat(#{status},'%'))
+            </if>
+            <if test="sellerID!=null">
+                and sellerID like concat('%',concat(#{sellerID},'%'))
+            </if>
+            <if test="customerID!=null">
+                and customerID like concat('%',concat(#{customerID},'%'))
+            </if>
+        </where>
+
+    </select>
+
+    <!--精确查询功能-->
+    <select id="findOneByProp" parameterType="java.util.Map" resultMap="baseMap">
+        select * from orderitem
+        <where>
+            <if test="id!=null">
+                id =#{id}
+            </if>
+            <if test="image!=null">
+                and image =#{image}
+            </if>
+            <if test="name!=null">
+                and name =#{name}
+            </if>
+            <if test="price!=null">
+                and price =#{price}
+            </if>
+            <if test="count!=null">
+                and count =#{count}
+            </if>
+            <if test="goodsID!=null">
+                and goodsID =#{goodsID}
+            </if>
+            <if test="orderID!=null">
+                and orderID =#{orderID}
+            </if>
+            <if test="status!=null">
+                and status =#{status}
+            </if>
+            <if test="sellerID!=null">
+                and sellerID =#{sellerID}
+            </if>
+            <if test="customerID!=null">
+                and customerID =#{customerID}
+            </if>
+        </where>
+
+    </select>
+
+    <select id="findOneByPropID" parameterType="java.lang.String" resultMap="baseMap" >
+        select * from orderitem
+        <where>
+            id =#{id}
+        </where>
+    </select>
+    <!--添加功能-->
+    <insert id="add" parameterType="com.example.demo.dto.OrderItem">
+        insert into orderitem
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="image!=null">
+                image,
+            </if>
+            <if test="name!=null">
+                name,
+            </if>
+            <if test="price!=null">
+                price,
+            </if>
+            <if test="count!=null">
+                count,
+            </if>
+            <if test="goodsID!=null">
+                goodsID,
+            </if>
+            <if test="orderID!=null">
+                orderID,
+            </if>
+            <if test="status!=null">
+                status,
+            </if>
+            <if test="sellerID!=null">
+                sellerID,
+            </if>
+            <if test="customerID!=null">
+                customerID
+            </if>
+        </trim>
+
+        <trim prefix="values(" suffix=")" suffixOverrides=",">
+            <if test="image!=null">
+                #{image},
+            </if>
+            <if test="name!=null">
+                #{name},
+            </if>
+            <if test="price!=null">
+                #{price},
+            </if>
+            <if test="count!=null">
+                #{count},
+            </if>
+            <if test="goodsID!=null">
+                #{goodsID.id},
+            </if>
+            <if test="orderID!=null">
+                #{orderID.id},
+            </if>
+            <if test="status!=null">
+                #{status},
+            </if>
+            <if test="sellerID!=null">
+                #{sellerID},
+            </if>
+            <if test="customerID!=null">
+                #{customerID}
+            </if>
+        </trim>
+    </insert>
+
+    <!--修改功能-->
+    <update id="update" parameterType="com.example.demo.dto.OrderItem">
+        UPDATE
+        orderitem
+        <set>
+            <if test="image!=null">
+                image=#{image},
+            </if>
+            <if test="name!=null">
+                name=#{name},
+            </if>
+            <if test="price!=null">
+                price=#{price},
+            </if>
+            <if test="count!=null">
+                count=#{count},
+            </if>
+            <!--<if test="goodsID!=null">-->
+                <!--goodsID = #{goodsID.id},-->
+            <!--</if>-->
+            <!--<if test="orderID!=null">-->
+                <!--orderID = #{orderID.id},-->
+            <!--</if>-->
+            <if test="status!=null">
+                status =#{status},
+            </if>
+            <if test="sellerID!=null">
+                sellerID=#{sellerID},
+            </if>
+            <if test="customerID!=null">
+                customerID=#{customerID}
+            </if>
+        </set>
+        WHERE id=#{id}
+    </update>
+
+
+    <delete id="delete" parameterType="java.lang.String">
+        delete FROM
+        orderitem
+        WHERE
+        id=#{id}
+    </delete>
+
+    <!--批量删除-->
+    <delete id="deleteAll" parameterType="list">
+        delete from orderitem where id in
+        <foreach collection="list" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </delete>
+
+
+
+</mapper>

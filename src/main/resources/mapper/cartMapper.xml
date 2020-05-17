@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--namespace定义这个映射和哪个接口关联-->
+<mapper namespace="com.example.demo.dao.ICartDao">
+    <!--关系映射-->
+    <resultMap id="baseMap" type="com.example.demo.dto.Cart">
+        <result column="id" property="id"/>
+        <result column="count" property="count"/>
+        <result column="price" property="price"/>
+        <result column="goodsID" property="goodsID"/>
+        <result column="customerID" property="customerID"/>
+        <result column="name" property="name"/>
+        <result column="image" property="image"/>
+        <result column="regdate" property="regdate" javaType="java.sql.Date"/>
+        <result column="stock" property="stock"/>
+    </resultMap>
+
+    <!--模糊查询功能-->
+    <select id="findByProp" parameterType="java.util.Map" resultMap="baseMap">
+        select * from cart
+        <where>
+            <if test="name!=null">
+                and name like concat('%',concat(#{name},'%'))
+            </if>
+            <if test="id!=null">
+                and id like concat('%',concat(#{id},'%'))
+            </if>
+            <if test="goodsID!=null">
+                and goodsID like concat('%',concat(#{goodsID},'%'))
+            </if>
+            <if test="customerID!=null">
+                and customerID like concat('%',concat(#{customerID},'%'))
+            </if>
+        </where>
+    </select>
+
+    <!--精确查询功能-->
+    <select id="findOneByProp" parameterType="java.util.Map" resultMap="baseMap">
+
+        select * from cart
+
+        <where>
+            <if test="id!=null">
+                id =#{id}
+            </if>
+            <if test="name!=null">
+                and name =#{name}
+            </if>
+            <if test="goodsID!=null">
+                and goodsID =#{goodsID}
+            </if>
+            <if test="customerID!=null">
+                and customerID =#{customerID}
+            </if>
+        </where>
+
+    </select>
+    <select id="findOneByPropID" parameterType="java.lang.String" resultMap="baseMap" >
+        select * from cart
+        <where>
+            id =#{id}
+        </where>
+    </select>
+    <!--添加功能-->
+    <insert id="add" parameterType="com.example.demo.dto.Cart">
+        INSERT INTO
+        cart
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="count!=null">
+                count,
+            </if>
+            <if test="price!=null">
+                price,
+            </if>
+            <if test="goodsID!=null">
+                goodsID,
+            </if>
+            <if test="customerID!=null">
+                customerID,
+            </if>
+            <if test="name!=null">
+                name,
+            </if>
+            <if test="image!=null">
+                image,
+            </if>
+            <if test="regdate!=null">
+                regdate,
+            </if>
+            <if test="stock!=null">
+                stock
+            </if>
+        </trim>
+
+        <trim prefix="  values(" suffix=")" suffixOverrides=",">
+            <if test="count!=null">
+                #{count},
+            </if>
+            <if test="price!=null">
+                #{price},
+            </if>
+            <if test="goodsID!=null">
+                #{goodsID},
+            </if>
+            <if test="customerID!=null">
+                #{customerID},
+            </if>
+            <if test="name!=null">
+                #{name},
+            </if>
+            <if test="image!=null">
+                #{image},
+            </if>
+            <if test="regdate!=null">
+                #{regdate},
+            </if>
+            <if test="stock!=null">
+                #{stock}
+            </if>
+        </trim>
+    </insert>
+
+    <!--修改功能-->
+    <update id="update" parameterType="com.example.demo.dto.Cart">
+        UPDATE
+        cart
+        <set>
+            <if test="count!=null">
+                count=#{count},
+            </if>
+            <if test="price!=null">
+                price=#{price},
+            </if>
+            <if test="goodsID!=null">
+                goodsID=#{goodsID},
+            </if>
+            <if test="customerID!=null">
+                customerID=#{customerID},
+            </if>
+            <if test="name!=null">
+                name=#{name},
+            </if>
+            <if test="image!=null">
+                image=#{image},
+            </if>
+            <if test="regdate!=null">
+                regdate=#{regdate},
+            </if>
+            <if test="stock!=null">
+                stock=#{stock}
+            </if>
+        </set>
+        WHERE id=#{id}
+    </update>
+
+
+    <delete id="delete" parameterType="java.lang.String">
+        delete FROM
+        cart
+        WHERE
+        id=#{id}
+    </delete>
+
+    <!--批量删除-->
+    <delete id="deleteAll" parameterType="list">
+        delete from cart where id in
+        <foreach collection="list" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </delete>
+
+    <!--<delete id="deleteAllgoodsID" parameterType="list">-->
+        <!--delete from cart where goodsID in-->
+        <!--<foreach collection="list" item="goodsID" open="(" close=")" separator=",">-->
+            <!--#{goodsID}-->
+        <!--</foreach>-->
+    <!--</delete>-->
+
+</mapper>

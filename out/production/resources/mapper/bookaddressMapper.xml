@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--namespace定义这个映射和哪个接口关联-->
+<mapper namespace="com.example.demo.dao.IBookaddressDao">
+    <!--关系映射-->
+    <resultMap id="baseMap" type="com.example.demo.dto.BookAddress">
+        <result column="id" property="id"/>
+        <result column="userID" property="userID"/>
+        <result column="realname" property="realname"/>
+        <result column="province" property="province"/>
+        <result column="city" property="city"/>
+        <result column="area" property="area"/>
+        <result column="detail" property="detail"/>
+        <result column="phone" property="phone"/>
+        <result column="isdefault" property="isdefault"/>
+    </resultMap>
+
+    <!--模糊查询功能-->
+    <select id="findByProp" parameterType="java.util.Map" resultMap="baseMap">
+        select * from bookaddress
+        <where>
+            <if test="id!=null">
+                id like concat('%',concat(#{id},'%'))
+            </if>
+            <if test="userID!=null">
+                and userID like concat('%',concat(#{userID},'%'))
+            </if>
+            <if test="realname!=null">
+                and realname like concat('%',concat(#{realname},'%'))
+            </if>
+            <if test="isdefault!=null">
+                and isdefault like concat('%',concat(#{isdefault},'%'))
+            </if>
+        </where>
+
+    </select>
+
+    <!--精确查询功能-->
+    <select id="findOneByProp" parameterType="java.util.Map" resultMap="baseMap">
+
+        select * from bookaddress
+
+        <where>
+            <if test="id!=null">
+                id =#{id}
+            </if>
+            <if test="userID!=null">
+                and userID =#{userID}
+            </if>
+            <if test="realname!=null">
+                and realname =#{realname}
+            </if>
+            <if test="isdefault!=null">
+                and isdefault =#{isdefault}
+            </if>
+        </where>
+
+    </select>
+    <!--通过id查询-->
+    <select id="findOneByPropID" parameterType="java.lang.Integer" resultMap="baseMap" >
+        select * from bookaddress
+        <where>
+            id =#{id}
+        </where>
+
+    </select>
+    <!--添加功能-->
+    <insert id="add" parameterType="com.example.demo.dto.BookAddress">
+        INSERT INTO
+        bookaddress
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userID!=null">
+                userID,
+            </if>
+            <if test="realname!=null">
+                realname,
+            </if>
+            <if test="province!=null">
+                province,
+            </if>
+            <if test="city!=null">
+                city,
+            </if>
+            <if test="area!=null">
+                area,
+            </if>
+            <if test="detail!=null">
+                detail,
+            </if>
+            <if test="phone!=null">
+                phone,
+            </if>
+            <if test="isdefault!=null">
+                isdefault
+            </if>
+        </trim>
+
+        <trim prefix="  values(" suffix=")" suffixOverrides=",">
+            <if test="userID!=null">
+                #{userID},
+            </if>
+            <if test="realname!=null">
+                #{realname},
+            </if>
+            <if test="province!=null">
+                #{province},
+            </if>
+            <if test="city!=null">
+                #{city},
+            </if>
+            <if test="area!=null">
+                #{area},
+            </if>
+            <if test="detail!=null">
+                #{detail},
+            </if>
+            <if test="phone!=null">
+                #{phone},
+            </if>
+            <if test="isdefault!=null">
+                #{isdefault}
+            </if>
+        </trim>
+    </insert>
+
+    <!--修改功能-->
+    <update id="update" parameterType="com.example.demo.dto.BookAddress">
+        UPDATE
+        bookaddress
+        <set>
+            <if test="userID!=null">
+                userID=#{userID},
+            </if>
+            <if test="realname!=null">
+                realname=#{realname},
+            </if>
+            <if test="province!=null">
+                province=#{province},
+            </if>
+            <if test="city!=null">
+                city=#{city},
+            </if>
+            <if test="area!=null">
+                area=#{area},
+            </if>
+            <if test="detail!=null">
+                detail=#{detail},
+            </if>
+            <if test="phone!=null">
+                phone=#{phone},
+            </if>
+            <if test="isdefault!=null">
+                isdefault=#{isdefault}
+            </if>
+        </set>
+        WHERE id=#{id}
+    </update>
+
+
+    <delete id="delete" parameterType="java.lang.Integer">
+        delete FROM
+        bookaddress
+        WHERE
+        id=#{id}
+    </delete>
+
+    <!--批量删除-->
+    <delete id="deleteAll" parameterType="list">
+        delete from bookaddress where id in
+        <foreach collection="list" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </delete>
+
+
+</mapper>

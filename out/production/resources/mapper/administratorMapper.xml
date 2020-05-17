@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--namespace定义这个映射和哪个接口关联-->
+<mapper namespace="com.example.demo.dao.IAdministratorDao">
+
+    <!--关系映射-->
+
+    <resultMap id="adminMap" type="com.example.demo.dto.Administrator">
+        <result column="id" property="id"/>
+        <result column="realname" property="realname"/>
+        <result column="username" property="username"/>
+        <result column="password" property="password"/>
+        <result column="postcode" property="postcode"/>
+        <result column="email" property="email"/>
+        <result column="phone" property="phone"/>
+        <result column="regdate" property="regdate"  javaType="java.sql.Date"/>
+        <result column="img" property="img"/>
+    </resultMap>
+
+   <!--模糊查询-->
+    <select id="findByProp" resultMap="adminMap" parameterType="java.util.Map">
+        select * from administrator
+        <where>
+            <if test="id!=null">
+                id like concat('%',concat(#{id},'%'))
+            </if>
+            <if test="realname!=null">
+                and realname like concat('%',concat(#{realname},'%'))
+            </if>
+            <if test="username!=null">
+                and username like concat('%',concat(#{username},'%'))
+            </if>
+            <if test="password!=null">
+                and password like concat('%',concat(#{password},'%'))
+            </if>
+            <if test="address!=null">
+                and address like concat('%',concat(#{address},'%'))
+            </if>
+            <if test="postcode!=null">
+                and postcode like concat('%',concat(#{postcode},'%'))
+            </if>
+            <if test="email!=null">
+                and email like concat('%',concat(#{email},'%'))
+            </if>
+            <if test="phone!=null">
+                and phone like concat('%',concat(#{phone},'%'))
+            </if>
+            <if test="regdate!=null">
+                and regdate like concat('%',concat(#{regdate},'%'))
+            </if>
+        </where>
+    </select>
+
+    <!--精确查询-->
+    <select id="findOneByProp" resultMap="adminMap" parameterType="java.util.Map">
+        select * from administrator
+        <where>
+            <if test="id!=null">
+                id =#{id}
+            </if>
+            <if test="realname!=null">
+                and realname =#{realname}
+            </if>
+            <if test="username!=null">
+                and username =#{username}
+            </if>
+            <if test="address!=null">
+                and address =#{address}
+            </if>
+            <if test="postcode!=null">
+                and postcode =#{postcode}
+            </if>
+            <if test="email!=null">
+                and email =#{email}
+            </if>
+            <if test="phone!=null">
+                and phone =#{phone}
+            </if>
+            <if test="regdate!=null">
+                and regdate =#{regdate}
+            </if>
+        </where>
+    </select>
+
+
+
+    <!--<select id="getUserPass" resultMap="adminMap">-->
+        <!--select * from administrator-->
+        <!--<where>-->
+            <!--<if test="username!=null">-->
+                <!--and username =#{username}-->
+            <!--</if>-->
+            <!--<if test="password!=null">-->
+                <!--and password =#{password}-->
+            <!--</if>-->
+        <!--</where>-->
+    <!--</select>-->
+
+     <!--添加-->
+    <insert id="add" parameterType="com.example.demo.dto.Administrator">
+        INSERT INTO administrator
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="realname!=null">
+                realname,
+            </if>
+            <if test="username!=null">
+                username,
+            </if>
+            <if test="password!=null">
+                password,
+            </if>
+            <if test="address!=null">
+                address,
+            </if>
+            <if test="postcode!=null">
+                postcode,
+            </if>
+            <if test="email!=null">
+                email,
+            </if>
+            <if test="phone!=null">
+                phone,
+            </if>
+            <if test="regdate!=null">
+                regdate
+            </if>
+        </trim>
+        <trim prefix="  values(" suffix=")" suffixOverrides=",">
+            <if test="realname!=null">
+                #{realname},
+            </if>
+            <if test="username!=null">
+                #{username},
+            </if>
+            <if test="password!=null">
+                #{password},
+            </if>
+            <if test="address!=null">
+                #{address},
+            </if>
+            <if test="postcode!=null">
+                #{postcode},
+            </if>
+            <if test="email!=null">
+                #{email},
+            </if>
+            <if test="phone!=null">
+                #{phone},
+            </if>
+            <if test="regdate!=null">
+                #{regdate}
+            </if>
+        </trim>
+    </insert>
+
+    <!--更新-->
+    <update id="update" parameterType="com.example.demo.dto.Administrator">
+        UPDATE administrator
+        <set>
+            <if test="realname!=null">
+                realname=#{realname},
+            </if>
+            <if test="username!=null">
+                username=#{username},
+            </if>
+            <if test="password!=null">
+                password=#{password},
+            </if>
+            <if test="address!=null">
+                address=#{address},
+            </if>
+            <if test="postcode!=null">
+                postcode=#{postcode},
+            </if>
+            <if test="email!=null">
+                email=#{email},
+            </if>
+            <if test="phone!=null">
+                phone=#{phone},
+            </if>
+            <if test="regdate!=null">
+                regdate=#{regdate},
+            </if>
+            <if test="img!=null">
+                img=#{img}
+            </if>
+        </set>
+        WHERE id=#{id}
+    </update>
+
+
+    <delete id="delete" parameterType="com.example.demo.dto.Administrator">
+        DELETE FROM administrator WHERE id=#{id}
+    </delete>
+
+</mapper>

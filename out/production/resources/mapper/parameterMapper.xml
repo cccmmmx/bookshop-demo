@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--namespace定义这个映射和哪个接口关联-->
+<mapper namespace="com.example.demo.dao.IParameterDao">
+    <!--关系映射-->
+    <resultMap id="parameterbaseMap" type="com.example.demo.dto.Parameter">
+        <result column="id" property="id"/>
+        <result column="webname" property="webname"/>
+        <result column="regtiaoyue" property="regtiaoyue"/>
+        <result column="notice" property="notice"/>
+        <result column="address" property="address"/>
+        <result column="postcode" property="postcode"/>
+        <result column="tel" property="tel"/>
+        <result column="copyright" property="copyright"/>
+        <result column="weblogo" property="weblogo"/>
+        <result column="website" property="website"/>
+        <result column="affordmethod" property="affordmethod"/>
+        <result column="shopstream" property="shopstream"/>
+        <result column="postmethod" property="postmethod"/>
+        <result column="postdescp" property="postdescp"/>
+        <result column="worktime" property="worktime"/>
+        <result column="service" property="service"/>
+        <result column="law" property="law"/>
+        <result column="commques" property="commques"/>
+        <result column="dealrule" property="dealrule"/>
+    </resultMap>
+
+    <!--模糊查询功能-->
+    <select id="findByProp" parameterType="java.util.Map" resultMap="parameterbaseMap">
+        select * from parameter
+        <where>
+            <if test="id!=null">
+                id like concat('%',concat(#{id},'%'))
+            </if>
+        </where>
+    </select>
+
+    <!--精确查询功能-->
+    <select id="findOneByProp" parameterType="java.util.Map" resultMap="parameterbaseMap">
+
+        select * from parameter
+
+        <where>
+            <if test="id!=null">
+                id =#{id}
+            </if>
+
+        </where>
+    </select>
+
+    <!--添加功能-->
+    <insert id="add" parameterType="com.example.demo.dto.Parameter">
+        INSERT INTO
+        parameter
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="webname!=null">
+                webname,
+            </if>
+            <if test="regtiaoyue!=null">
+                regtiaoyue,
+            </if>
+            <if test="notice!=null">
+                notice,
+            </if>
+            <if test="address!=null">
+                address,
+            </if>
+            <if test="postcode!=null">
+                postcode,
+            </if>
+            <if test="tel!=null">
+                tel,
+            </if>
+            <if test="copyright!=null">
+                copyright,
+            </if>
+            <if test="weblogo!=null">
+                weblogo,
+            </if>
+            <if test="website!=null">
+                website,
+            </if>
+            <if test="affordmethod!=null">
+                affordmethod,
+            </if>
+            <if test="shopstream!=null">
+                shopstream,
+            </if>
+            <if test="postmethod!=null">
+                postmethod,
+            </if>
+            <if test="postdescp!=null">
+                postdescp,
+            </if>
+            <if test="worktime!=null">
+                worktime,
+            </if>
+            <if test="service!=null">
+                service,
+            </if>
+            <if test="law!=null">
+                law,
+            </if>
+            <if test="commques!=null">
+                commques,
+            </if>
+            <if test="dealrule!=null">
+                dealrule
+            </if>
+        </trim>
+
+        <trim prefix="  values(" suffix=")" suffixOverrides=",">
+            <if test="webname!=null">
+                #{webname},
+            </if>
+            <if test="regtiaoyue!=null">
+                #{regtiaoyue},
+            </if>
+            <if test="notice!=null">
+                #{notice},
+            </if>
+            <if test="address!=null">
+                #{address},
+            </if>
+            <if test="postcode!=null">
+                #{postcode},
+            </if>
+            <if test="tel!=null">
+                #{tel},
+            </if>
+            <if test="copyright!=null">
+                #{copyright},
+            </if>
+            <if test="weblogo!=null">
+                #{weblogo},
+            </if>
+            <if test="website!=null">
+                #{website},
+            </if>
+            <if test="affordmethod!=null">
+                #{affordmethod},
+            </if>
+            <if test="shopstream!=null">
+                #{shopstream},
+            </if>
+            <if test="postmethod!=null">
+                #{postmethod},
+            </if>
+            <if test="postdescp!=null">
+                #{postdescp},
+            </if>
+            <if test="worktime!=null">
+                #{worktime},
+            </if>
+            <if test="service!=null">
+                #{service},
+            </if>
+            <if test="law!=null">
+                #{law},
+            </if>
+            <if test="commques!=null">
+                #{commques},
+            </if>
+            <if test="dealrule!=null">
+                #{dealrule},
+            </if>
+        </trim>
+    </insert>
+
+    <!--修改功能-->
+    <update id="update" parameterType="com.example.demo.dto.Parameter">
+        UPDATE
+        parameter
+        <set>
+            <if test="webname!=null">
+                webname=#{webname},
+            </if>
+            <if test="regtiaoyue!=null">
+                regtiaoyue=#{regtiaoyue},
+            </if>
+            <if test="notice!=null">
+                notice=#{notice},
+            </if>
+            <if test="address!=null">
+                address=#{address},
+            </if>
+            <if test="postcode!=null">
+                postcode=#{postcode},
+            </if>
+            <if test="tel!=null">
+                tel=#{tel},
+            </if>
+            <if test="copyright!=null">
+                copyright=#{copyright},
+            </if>
+            <if test="weblogo!=null">
+                weblogo=#{weblogo},
+            </if>
+            <if test="website!=null">
+                website=#{website},
+            </if>
+            <if test="affordmethod!=null">
+                affordmethod=#{affordmethod},
+            </if>
+            <if test="shopstream!=null">
+                shopstream=#{shopstream},
+            </if>
+            <if test="postmethod!=null">
+                postmethod=#{postmethod},
+            </if>
+            <if test="postdescp!=null">
+                postdescp=#{postdescp},
+            </if>
+            <if test="worktime!=null">
+                worktime=#{worktime},
+            </if>
+            <if test="service!=null">
+                service=#{service},
+            </if>
+            <if test="law!=null">
+                law=#{law},
+            </if>
+            <if test="commques!=null">
+                commques=#{commques},
+            </if>
+            <if test="dealrule!=null">
+                dealrule=#{dealrule}
+            </if>
+        </set>
+        WHERE id=#{id}
+    </update>
+
+
+    <!--<delete id="delete" parameterType="java.lang.String">-->
+        <!--delete FROM-->
+        <!--category-->
+        <!--WHERE-->
+        <!--id=#{id}-->
+    <!--</delete>-->
+
+    <!--批量删除-->
+    <!--<delete id="deleteAll" parameterType="list">-->
+        <!--delete from category where id in-->
+        <!--<foreach collection="list" item="id" open="(" close=")" separator=",">-->
+            <!--#{id}-->
+        <!--</foreach>-->
+    <!--</delete>-->
+
+
+</mapper>

@@ -1,0 +1,322 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.dao.IbookinfoDao">
+    <!--结果映射成关联对象-->
+    <resultMap id="bookinfoResultMap" type="com.example.demo.dto.Bookinfo">
+        <result column="id" property="id"/>
+        <result column="label" property="label"/>
+        <result column="bookName" property="bookName"/>
+        <result column="bookPress" property="bookPress"/>
+        <result column="bookPubDate" property="bookPubDate" javaType="java.sql.Date"/>
+        <result column="bookVersion" property="bookVersion"/>
+        <result column="bookAuthor" property="bookAuthor"/>
+        <result column="bookTanslor" property="bookTanslor"/>
+        <result column="bookisbn" property="bookisbn"/>
+        <result column="bookPrice" property="bookPrice" javaType="java.math.BigDecimal"/>
+        <result column="bookPages" property="bookPages"/>
+        <result column="bookOutline" property="bookOutline"/>
+        <result column="state" property="state"/>
+        <result column="bookCatalog" property="bookCatalog"/>
+        <result column="bookMprice" property="bookMprice" javaType="java.math.BigDecimal"/>
+        <result column="bookPrprice" property="bookPrprice" javaType="java.math.BigDecimal"/>
+        <result column="bookDealmount" property="bookDealmount"/>
+        <result column="bookLookmount" property="bookLookmount"/>
+        <result column="bookDiscount" property="bookDiscount" javaType="java.math.BigDecimal"/>
+        <result column="bookPic" property="bookPic"/>
+        <result column="bookStoremount" property="bookStoremount"/>
+        <result column="bookStoretime" property="bookStoretime" javaType="java.sql.Date"/>
+        <association property="category" javaType="com.example.demo.dto.Category" column="categoryID"  select="com.example.demo.dao.ICategoryDao.findOneByPropID"/>
+        <association property="seller" javaType="com.example.demo.dto.Seller" column="sellerID" select="com.example.demo.dao.ISellerDao.findOneByPropID"/>
+    </resultMap>
+
+<!--通过id查询图书-->
+    <select id="findOneByPropID" parameterType="java.lang.String" resultMap="bookinfoResultMap" >
+        select * from bookinfo
+        <where>
+            id =#{id}
+        </where>
+    </select>
+
+<!--精确查询-->
+    <select id="findOneByProp" parameterType="java.util.Map" resultMap="bookinfoResultMap">
+        select * from bookinfo
+        <where>
+            <if test="label!=null">
+                and label =#{label}
+            </if>
+            <if test="bookName!=null">
+                and bookName =#{bookName}
+            </if>
+            <if test="bookAuthor!=null">
+                and bookAuthor =#{bookAuthor}
+            </if>
+            <if test="bookisbn!=null">
+                and bookisbn =#{bookisbn}
+            </if>
+            <if test="bookisbn!=null">
+                and bookisbn =#{bookisbn}
+            </if>
+            <if test="bookCatalog!=null">
+                and bookCatalog =#{bookCatalog}
+            </if>
+        </where>
+    </select>
+
+    <select id="findByProp" parameterType="java.util.Map" resultMap="bookinfoResultMap">
+        select * from bookinfo
+        <where>
+            <if test="id!=null">
+                id like concat('%',concat(#{id},'%'))
+            </if>
+            <if test="label!=null">
+                and label like concat('%',concat(#{label},'%'))
+            </if>
+            <if test="bookName!=null">
+                and bookName like concat('%',concat(#{bookName},'%'))
+            </if>
+            <if test="bookAuthor!=null">
+                and bookAuthor like concat('%',concat(#{bookAuthor},'%'))
+            </if>
+            <if test="bookisbn!=null">
+                and bookisbn like concat('%',concat(#{bookisbn},'%'))
+            </if>
+            <if test="bookCatalog!=null">
+                and bookCatalog like concat('%',concat(#{bookCatalog},'%'))
+            </if>
+        </where>
+    </select>
+
+
+    <!--添加功能-->
+    <insert id="add" parameterType="com.example.demo.dto.Bookinfo">
+        insert into bookinfo
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="label != null">
+                label,
+            </if>
+            <if test="bookName != null">
+                bookName,
+            </if>
+            <if test="bookPress != null ">
+                bookPress,
+            </if>
+            <if test="bookPubDate != null">
+                bookPubDate,
+            </if>
+            <if test="bookVersion != null">
+                bookVersion,
+            </if>
+            <if test="bookAuthor != null">
+                bookAuthor,
+            </if>
+            <if test="bookTanslor != null">
+                bookTanslor,
+            </if>
+            <if test="bookisbn != null">
+                bookisbn,
+            </if>
+            <if test="bookPrice != null">
+                bookPrice,
+            </if>
+
+            <if test="bookPages != null">
+                bookPages,
+            </if>
+            <if test="bookOutline != null">
+                bookOutline,
+            </if>
+            <if test="state != null">
+                state,
+            </if>
+            <if test="bookCatalog != null">
+                bookCatalog,
+            </if>
+            <if test="bookMprice != null">
+                bookMprice,
+            </if>
+            <if test="bookPrprice != null">
+                bookPrprice,
+            </if>
+
+            <if test="bookDealmount != null">
+                bookDealmount,
+            </if>
+            <if test="bookLookmount != null">
+                bookLookmount,
+            </if>
+            <if test="bookDiscount != null">
+                bookDiscount,
+            </if>
+            <if test="bookPic != null and image !=''">
+                bookPic,
+            </if>
+            <if test="bookStoremount != null">
+                bookStoremount,
+            </if>
+            <if test="category != null">
+                categoryID,
+            </if>
+            <if test="seller != null">
+                sellerID
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="label != null">
+                #{label},
+            </if>
+            <if test="bookName != null">
+                #{bookName},
+            </if>
+            <if test="bookPress != null">
+                #{bookPress},
+            </if>
+            <if test="bookPubDate != null">
+                #{bookPubDate},
+            </if>
+            <if test="bookVersion != null">
+                #{bookVersion},
+            </if>
+            <if test="bookAuthor != null">
+                #{bookAuthor},
+            </if>
+            <if test="bookTanslor != null">
+                #{bookTanslor},
+            </if>
+            <if test="bookisbn != null">
+                #{bookisbn},
+            </if>
+            <if test="bookPrice != null">
+                #{bookPrice},
+            </if>
+            <if test="bookPages != null">
+                #{bookPages},
+            </if>
+            <if test="bookOutline != null">
+                #{bookOutline},
+            </if>
+            <if test="state != null">
+                #{state},
+            </if>
+            <if test="bookCatalog != null">
+                #{bookCatalog},
+            </if>
+            <if test="bookMprice != null">
+                #{bookMprice},
+            </if>
+            <if test="bookPrprice != null">
+                #{bookPrprice},
+            </if>
+            <if test="bookDealmount != null">
+                #{bookDealmount},
+            </if>
+            <if test="bookLookmount != null">
+                #{bookLookmount},
+            </if>
+            <if test="bookDiscount != null">
+                #{bookDiscount},
+            </if>
+            <if test="bookPic != null">
+                #{bookPic},
+            </if>
+            <if test="bookStoremount != null">
+                #{bookStoremount},
+            </if>
+            <if test="seller != null">
+                #{seller.id},
+            </if>
+            <if test="category != null">
+                #{category.id}
+            </if>
+        </trim>
+    </insert>
+
+
+    <!--修改功能-->
+    <update id="update" parameterType="com.example.demo.dto.Bookinfo">
+        UPDATE
+        bookinfo
+        <set>
+            <if test="label != null">
+                label = #{label},
+            </if>
+            <if test="bookName != null">
+                bookName = #{bookName},
+            </if>
+            <if test="bookPress != null">
+                bookPress = #{bookPress},
+            </if>
+            <if test="bookPubDate != null">
+                bookPubDate = #{bookPubDate},
+            </if>
+            <if test="bookVersion != null">
+                bookVersion = #{bookVersion},
+            </if>
+            <if test="bookAuthor != null">
+                bookAuthor = #{bookAuthor},
+            </if>
+            <if test="bookTanslor != null">
+                bookTanslor = #{bookTanslor},
+            </if>
+            <if test="bookisbn != null">
+                bookisbn = #{bookisbn},
+            </if>
+            <if test="bookPrice != 0.00">
+                bookPrice = #{bookPrice},
+            </if>
+            <if test="bookPages != null">
+                bookPages = #{bookPages},
+            </if>
+            <if test="bookOutline != null">
+                bookOutline = #{bookOutline},
+            </if>
+            <if test="state != null">
+                state = #{state},
+            </if>
+            <if test="bookCatalog != null">
+                bookCatalog = #{bookCatalog},
+            </if>
+            <if test="bookMprice != 0.00">
+                bookMprice = #{bookMprice},
+            </if>
+            <if test="bookPrprice != 0.00">
+                bookPrprice = #{bookPrprice},
+            </if>
+            <if test="bookCatalog != null">
+                bookCatalog = #{bookCatalog},
+            </if>
+            <if test="bookDealmount != null">
+                bookDealmount = #{bookDealmount},
+            </if>
+            <if test="bookLookmount != null">
+                bookLookmount = #{bookLookmount},
+            </if>
+            <if test="bookDiscount != 0.00">
+                bookDiscount = #{bookDiscount},
+            </if>
+            <if test="bookPic != null">
+                bookPic = #{bookPic},
+            </if>
+            <if test="bookStoremount != null">
+                bookStoremount = #{bookStoremount},
+            </if>
+            <if test="seller != null">
+                sellerID=#{seller.id},
+            </if>
+            <if test="category != null">
+                categoryID=#{category.id}
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!--删除-->
+    <delete id="delete" parameterType="java.lang.String">
+        delete FROM
+        goods
+        WHERE
+        id=#{id}
+    </delete>
+
+</mapper>

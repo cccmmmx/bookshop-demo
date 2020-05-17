@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--namespace定义这个映射和哪个接口关联-->
+<mapper namespace="com.example.demo.dao.ICollectionDao">
+    <!--关系映射-->
+    <resultMap id="baseMap" type="com.example.demo.dto.Collection">
+        <result column="id" property="id"/>
+        <result column="goodsID" property="goodsID"/>
+        <result column="customerID" property="customerID"/>
+        <result column="name" property="name"/>
+        <result column="image" property="image"/>
+        <result column="author" property="author"/>
+        <result column="redate" property="redate" javaType="java.sql.Date"/>
+    </resultMap>
+
+    <!--模糊查询功能-->
+    <select id="findByProp" parameterType="java.util.Map" resultMap="baseMap">
+        select * from collection
+        <where>
+            <if test="id!=null">
+                id like concat('%',concat(#{id},'%'))
+            </if>
+            <if test="goodsID!=null">
+                and goodsID like concat('%',concat(#{goodsID},'%'))
+            </if>
+            <if test="customerID!=null">
+                and customerID like concat('%',concat(#{customerID},'%'))
+            </if>
+            <if test="name!=null">
+                and name like concat('%',concat(#{name},'%'))
+            </if>
+        </where>
+    </select>
+
+    <!--精确查询功能-->
+    <select id="findOneByProp" parameterType="java.util.Map" resultMap="baseMap">
+
+        select * from collection
+
+        <where>
+            <if test="id!=null">
+                id =#{id}
+            </if>
+            <if test="goodsID!=null">
+                and goodsID =#{goodsID}
+            </if>
+            <if test="customerID!=null">
+                and customerID =#{customerID}
+            </if>
+            <if test="name!=null">
+                and name =#{name}
+            </if>
+        </where>
+
+    </select>
+    <select id="findOneByPropID" parameterType="java.lang.String" resultMap="baseMap" >
+        select * from collection
+        <where>
+            id =#{id}
+        </where>
+    </select>
+    <!--添加功能-->
+    <insert id="add" parameterType="com.example.demo.dto.Collection">
+        INSERT INTO
+        collection
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="goodsID!=null">
+                goodsID,
+            </if>
+            <if test="customerID!=null">
+                customerID,
+            </if>
+            <if test="name!=null">
+                name,
+            </if>
+            <if test="image!=null">
+                image,
+            </if>
+            <if test="author!=null">
+                author,
+            </if>
+            <if test="redate!=null">
+                redate
+            </if>
+        </trim>
+
+        <trim prefix="  values(" suffix=")" suffixOverrides=",">
+            <if test="goodsID!=null">
+                #{goodsID},
+            </if>
+            <if test="customerID!=null">
+                #{customerID},
+            </if>
+            <if test="name!=null">
+                #{name},
+            </if>
+            <if test="image!=null">
+                #{image},
+            </if>
+            <if test="author!=null">
+                #{author},
+            </if>
+            <if test="redate!=null">
+                #{redate},
+            </if>
+        </trim>
+    </insert>
+
+    <!--修改功能-->
+    <update id="update" parameterType="com.example.demo.dto.Collection">
+        UPDATE
+        collection
+        <set>
+            <if test="goodsID!=null">
+                goodsID=#{goodsID},
+            </if>
+            <if test="customerID!=null">
+                customerID=#{customerID},
+            </if>
+            <if test="name!=null">
+                name=#{name},
+            </if>
+            <if test="image!=null">
+                image=#{image},
+            </if>
+            <if test="author!=null">
+                author=#{author},
+            </if>
+            <if test="redate!=null">
+                redate=#{redate}
+            </if>
+        </set>
+        WHERE id=#{id}
+    </update>
+
+
+    <delete id="delete" parameterType="java.lang.String">
+        delete FROM
+        collection
+        WHERE
+        id=#{id}
+    </delete>
+
+    <!--批量删除-->
+    <delete id="deleteAll" parameterType="list">
+        delete from collection where id in
+        <foreach collection="list" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </delete>
+
+
+</mapper>

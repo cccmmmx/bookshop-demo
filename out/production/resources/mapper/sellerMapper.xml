@@ -1,0 +1,282 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--namespace定义这个映射和哪个接口关联-->
+<mapper namespace="com.example.demo.dao.ISellerDao">
+    <resultMap id="baseMap" type="com.example.demo.dto.Seller">
+        <result column="id" property="id" />
+        <result column="realname" property="realname" />
+        <result column="username" property="username" />
+        <result column="password" property="password" />
+        <result column="address" property="address" />
+        <result column="postcode" property="postcode" />
+        <result column="email" property="email" />
+        <result column="url" property="url" />
+        <result column="phone" property="phone" />
+        <result column="logo" property="logo" />
+        <result column="regdate" property="regdate" javaType="java.sql.Date"/>
+        <result column="grade" property="grade" />
+        <result column="state" property="state" />
+    </resultMap>
+    <!--模糊查询功能-->
+    <select id="findByProp" resultMap="baseMap" parameterType="java.util.Map">
+        select * from bookseller
+        <where>
+            <if test="id!=null">
+                id like concat('%',concat(#{id},'%'))
+            </if>
+            <if test="realname!=null">
+                and realname like concat('%',concat(#{realname},'%'))
+            </if>
+            <if test="username!=null">
+                and username like concat('%',concat(#{username},'%'))
+            </if>
+            <if test="password!=null">
+                and password like concat('%',concat(#{password},'%'))
+            </if>
+            <if test="address!=null">
+                and address like concat('%',concat(#{address},'%'))
+            </if>
+
+            <if test="postcode!=null">
+                and postcode like concat('%',concat(#{postcode},'%'))
+            </if>
+            <if test="email!=null">
+                and email like concat('%',concat(#{email},'%'))
+            </if>
+            <if test="url!=null">
+                and url like concat('%',concat(#{url},'%'))
+            </if>
+            <if test="phone!=null">
+                and phone like concat('%',concat(#{phone},'%'))
+            </if>
+            <if test="logo!=null">
+                and logo like concat('%',concat(#{logo},'%'))
+            </if>
+            <if test="regdate!=null">
+                and regdate like concat('%',concat(#{regdate},'%'))
+            </if>
+            <if test="grade!=null">
+                and grade like concat('%',concat(#{grade},'%'))
+            </if>
+            <if test="state!=null">
+                and state like concat('%',concat(#{state},'%'))
+            </if>
+        </where>
+    </select>
+
+
+    <!--精确查询功能-->
+    <select id="findOneByProp" parameterType="java.util.Map" resultMap="baseMap">
+        select * from bookseller
+        <where>
+            <if test="id!=null">
+                id =#{id}
+            </if>
+            <if test="realname!=null">
+                and realname =#{realname}
+            </if>
+            <if test="username!=null">
+                and username =#{username}
+            </if>
+            <if test="password!=null">
+                and password =#{password}
+            </if>
+            <if test="address!=null">
+                and address =#{address}
+            </if>
+            <if test="postcode!=null">
+                and postcode =#{postcode}
+            </if>
+            <if test="email!=null">
+                and email =#{email}
+            </if>
+            <if test="url!=null">
+                and url =#{url}
+            </if>
+            <if test="phone!=null">
+                and phone =#{phone}
+            </if>
+            <if test="logo!=null">
+                and logo =#{logo}
+            </if>
+            <if test="regdate!=null">
+                and regdate =#{regdate}
+            </if>
+            <if test="grade!=null">
+                and grade =#{grade}
+            </if>
+            <if test="state!=null">
+                and state =#{state}
+            </if>
+        </where>
+    </select>
+
+    <!--id精确查询功能-->
+    <select id="findOneByPropID" parameterType="java.lang.String" resultMap="baseMap">
+        select * from bookseller
+        <where>
+                id =#{id}
+        </where>
+    </select>
+
+    <!--添加功能-->
+    <insert id="add" parameterType="com.example.demo.dto.Seller">
+        INSERT INTO
+        bookseller
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="realname!=null">
+                realname,
+            </if>
+            <if test="username!=null">
+                username,
+            </if>
+            <if test="password!=null">
+                password,
+            </if>
+            <if test="address!=null">
+                address,
+            </if>
+            <if test="postcode!=null">
+                postcode,
+            </if>
+            <if test="email!=null">
+                email,
+            </if>
+            <if test="url!=null">
+                url,
+            </if>
+            <if test="phone!=null">
+                phone,
+            </if>
+            <if test="logo!=null">
+                logo,
+            </if>
+            <if test="regdate!=null">
+                regdate,
+            </if>
+            <if test="grade!=null">
+                grade,
+            </if>
+            <if test="state!=null">
+                state
+            </if>
+        </trim>
+
+        <trim prefix="  values(" suffix=")" suffixOverrides=",">
+            <if test="realname!=null">
+                #{realname},
+            </if>
+            <if test="username!=null">
+                #{username},
+            </if>
+            <if test="password!=null">
+                #{password},
+            </if>
+            <if test="address!=null">
+                #{address},
+            </if>
+            <if test="postcode!=null">
+                #{postcode},
+            </if>
+            <if test="email!=null">
+                #{email},
+            </if>
+            <if test="url!=null">
+                #{url},
+            </if>
+            <if test="phone!=null">
+                #{phone},
+            </if>
+            <if test="logo!=null">
+                #{logo},
+            </if>
+            <if test="regdate!=null">
+                #{regdate},
+            </if>
+            <if test="grade!=null">
+                #{grade},
+            </if>
+            <if test="state!=null">
+                #{state}
+            </if>
+        </trim>
+    </insert>
+
+    <!--修改功能-->
+    <update id="update" parameterType="com.example.demo.dto.Seller">
+        UPDATE
+        bookseller
+        <set>
+            <if test="realname!=null">
+                realname=#{realname},
+            </if>
+            <if test="username!=null">
+                username=#{username},
+            </if>
+            <if test="password!=null">
+                password=#{password},
+            </if>
+            <if test="address!=null">
+                address=#{address},
+            </if>
+            <if test="postcode!=null">
+                postcode=#{postcode},
+            </if>
+            <if test="email!=null">
+                email=#{email},
+            </if>
+            <if test="url!=null">
+                url=#{url},
+            </if>
+            <if test="phone!=null">
+                phone=#{phone},
+            </if>
+            <if test="logo!=null">
+                logo=#{logo},
+            </if>
+            <if test="regdate!=null">
+                regdate=#{regdate},
+            </if>
+            <if test="grade!=null">
+                grade=#{grade},
+            </if>
+            <if test="state!=null">
+                state=#{state}
+            </if>
+        </set>
+        WHERE id=#{id}
+    </update>
+
+    <!--密码，账号查询功能-->
+    <select id="getByProp" parameterType="java.util.Map" resultMap="baseMap">
+        select *  from bookseller
+        <where>
+            <if test="username != null">
+                username =#{username}
+            </if>
+            <if test="password != null">
+                AND password =#{password}
+            </if>
+        </where>
+    </select>
+
+
+    <delete id="delete" parameterType="java.lang.String">
+        delete FROM
+        bookseller
+        WHERE
+        id=#{id}
+    </delete>
+
+    <!--批量删除-->
+    <delete id="deleteAll" parameterType="list">
+        delete from bookseller where id in
+        <foreach collection="list" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </delete>
+
+
+</mapper>

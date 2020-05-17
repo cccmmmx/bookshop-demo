@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--namespace定义这个映射和哪个接口关联-->
+<mapper namespace="com.example.demo.dao.ITOrderDao">
+    <!--关系映射-->
+    <resultMap id="baseMap" type="com.example.demo.dto.TOrder">
+        <result column="id" property="id"/>
+        <result column="orderTime" property="orderTime" javaType="java.sql.Date"/>
+        <result column="state" property="state"/>
+        <result column="realname" property="realname"/>
+        <result column="goodsCount" property="goodsCount"/>
+        <result column="phone" property="phone"/>
+        <result column="remark" property="remark"/>
+        <result column="postcode" property="postcode"/>
+        <result column="total" property="total"/>
+        <result column="address" property="address"/>
+        <result column="memo" property="memo"/>
+        <result column="message" property="message"/>
+        <association property="customerID" javaType="com.example.demo.dto.Customer" column="customerID"  select="com.example.demo.dao.ICustomerDao.findOneByPropID"/>
+    </resultMap>
+    <select id="findByProp" parameterType="java.util.Map" resultMap="baseMap">
+        select * from torder
+        <where>
+            <if test="id!=null">
+                id like concat('%',concat(#{id},'%'))
+            </if>
+            <if test="orderTime!=null">
+                and orderTime like concat('%',concat(#{orderTime},'%'))
+            </if>
+            <if test="state!=null">
+                and state like concat('%',concat(#{state},'%'))
+            </if>
+            <if test="realname!=null">
+                and realname like concat('%',concat(#{realname},'%'))
+            </if>
+            <if test="goodsCount!=null">
+                and goodsCount like concat('%',concat(#{goodsCount},'%'))
+            </if>
+            <if test="phone!=null">
+                and phone like concat('%',concat(#{phone},'%'))
+            </if>
+
+            <if test="remark!=null">
+                and remark like concat('%',concat(#{remark},'%'))
+            </if>
+
+
+            <if test="postcode!=null">
+                and postcode like concat('%',concat(#{postcode},'%'))
+            </if>
+
+            <if test="total!=null">
+                and total like concat('%',concat(#{total},'%'))
+            </if>
+            <if test="address!=null">
+                and address like concat('%',concat(#{address},'%'))
+            </if>
+            <if test="customerID!=null">
+                and customerID like concat('%',concat(#{customerID},'%'))
+            </if>
+
+
+        </where>
+
+    </select>
+    <!--精确查询功能-->
+    <select id="findOneByProp" parameterType="java.util.Map" resultMap="baseMap">
+
+        select * from torder
+
+        <where>
+            <if test="id!=null">
+                id =#{id}
+            </if>
+            <if test="orderTime!=null">
+                and orderTime =#{orderTime}
+            </if>
+            <if test="state!=null">
+                and state =#{state}
+            </if>
+            <if test="realname!=null">
+                and realname =#{realname}
+            </if>
+            <if test="goodsCount!=null">
+                and goodsCount =#{goodsCount}
+            </if>
+            <if test="phone!=null">
+                and phone =#{phone}
+            </if>
+            <if test="remark!=null">
+                and remark =#{remark}
+            </if>
+            <if test="postcode!=null">
+                and postcode =#{postcode}
+            </if>
+            <if test="total!=null">
+                and total =#{total}
+            </if>
+            <if test="address!=null">
+                and address =#{address}
+            </if>
+
+            <if test="customerID!=null">
+                and customerID =#{customerID}
+            </if>
+
+
+        </where>
+
+    </select>
+    <select id="findOneByPropID" parameterType="java.lang.String" resultMap="baseMap" >
+
+        select * from torder
+
+        <where>
+            id =#{id}
+        </where>
+
+    </select>
+
+    <select id="selectGoodsCount"  resultMap="baseMap" parameterType="com.example.demo.dto.OrderMounts">
+        select  SUM(goodsCount) goodsCount,orderTime
+        from torder where DATE_SUB(CURDATE(),INTERVAL 10 DAY )
+        <![CDATA[<=]]> DATE(orderTime) GROUP BY orderTime
+    </select>
+
+    <!--近十天订单交易金额统计-->
+    <select id="selectGoodsPrice"  resultMap="baseMap" parameterType="com.example.demo.dto.OrderMounts">
+        select  SUM(total) total,orderTime
+        from torder where DATE_SUB(CURDATE(),INTERVAL 10 DAY )
+        <![CDATA[<=]]> DATE(orderTime) GROUP BY orderTime
+    </select>
+
+    <insert id="add"  parameterType="com.example.demo.dto.TOrder" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO
+        torder
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="orderTime!=null">
+                orderTime,
+            </if>
+            <if test="state!=null">
+                state,
+            </if>
+            <if test="realname!=null">
+                realname,
+            </if>
+            <if test="goodsCount!=null">
+                goodsCount,
+            </if>
+            <if test="phone!=null">
+                phone,
+            </if>
+            <if test="remark!=null">
+                remark,
+            </if>
+            <if test="postcode!=null">
+                postcode,
+            </if>
+            <if test="total!=null">
+                total,
+            </if>
+            <if test="address!=null">
+                address,
+            </if>
+            <if test="customerID!=null">
+                customerID,
+            </if>
+            <if test="memo!=null">
+                memo,
+            </if>
+            <if test="message!=null">
+                message
+            </if>
+        </trim>
+
+        <trim prefix="  values(" suffix=")" suffixOverrides=",">
+            <if test="orderTime!=null">
+                #{orderTime},
+            </if>
+            <if test="state!=null">
+                #{state},
+            </if>
+            <if test="realname!=null">
+                #{realname},
+            </if>
+            <if test="goodsCount!=null">
+                #{goodsCount},
+            </if>
+            <if test="phone!=null">
+                #{phone},
+            </if>
+            <if test="remark!=null">
+                #{remark},
+            </if>
+            <if test="postcode!=null">
+                #{postcode},
+            </if>
+            <if test="total!=null">
+                #{total},
+            </if>
+            <if test="address!=null">
+                #{address},
+            </if>
+            <if test="customerID!=null">
+                #{customerID.id},
+            </if>
+            <if test="memo!=null">
+                #{memo},
+            </if>
+            <if test="message!=null">
+                #{message}
+            </if>
+        </trim>
+    </insert>
+
+
+    <update id="update" parameterType="com.example.demo.dto.TOrder">
+        UPDATE
+        torder
+        <set>
+            <if test="state!=null">
+                state=#{state},
+            </if>
+            <if test="remark!=null">
+                remark=#{remark},
+            </if>
+            <if test="phone!=null">
+                phone=#{phone},
+            </if>
+            <if test="address!=null">
+                address=#{address},
+            </if>
+            <if test="memo!=null">
+                memo=#{memo}
+            </if>
+        </set>
+        WHERE id=#{id}
+    </update>
+
+    <delete id="delete" parameterType="java.lang.String">
+        delete FROM
+        torder
+        WHERE
+        id=#{id}
+    </delete>
+
+    <!--批量删除-->
+    <delete id="deleteAll" parameterType="list">
+        delete from torder where id in
+        <foreach collection="list" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

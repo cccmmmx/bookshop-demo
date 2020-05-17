@@ -1,0 +1,55 @@
+buildscript {
+    ext {
+        springBootVersion = '1.5.7.RELEASE'
+    }
+    repositories {
+//   国内阿里镜像
+        maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' }
+    }
+    dependencies {
+//   springboot集成gradle
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+    }
+}
+//引入插件
+apply plugin: 'java'
+apply plugin: 'eclipse-wtp'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'war'
+
+group = 'com.example'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = 1.8
+
+repositories {
+//   国内阿里镜像
+    maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' }
+}
+
+configurations {
+    providedRuntime
+}
+
+//项目依赖
+dependencies {
+//    springboot集成freemarker（页面模板）
+    compile('org.springframework.boot:spring-boot-starter-freemarker')
+//    springboot集成mybatis（持久层框架）
+    compile('org.mybatis.spring.boot:mybatis-spring-boot-starter:1.3.1')
+//    springboot集成web mvc
+    compile('org.springframework.boot:spring-boot-starter-web')
+//    springboot集成pagehelper（分页）
+    compile('com.github.pagehelper:pagehelper-spring-boot-starter:1.1.1')
+//    springboot集成mysql（数据库）
+    runtime('mysql:mysql-connector-java')
+//	表示代码在时需要的，
+// providedRuntime:运行依赖,相应Jar包不会被加到War包里面
+    providedRuntime('org.springframework.boot:spring-boot-starter-tomcat')
+    testCompile('org.springframework.boot:spring-boot-starter-test')
+    //引入jwt
+    compile ('com.auth0:java-jwt:3.4.0')
+    //引入Aop
+    compile ('org.springframework.boot:spring-boot-starter-aop')
+    //引入json
+
+}

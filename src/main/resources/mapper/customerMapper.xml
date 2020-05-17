@@ -1,0 +1,281 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--namespace定义这个映射和哪个接口关联-->
+<mapper namespace="com.example.demo.dao.ICustomerDao">
+    <!--关系映射-->
+    <resultMap id="baseMap" type="com.example.demo.dto.Customer">
+        <result column="id" property="id"/>
+        <result column="realname" property="realname"/>
+        <result column="username" property="username"/>
+        <result column="password" property="password"/>
+        <result column="address" property="address"/>
+        <result column="gender" property="gender"/>
+        <result column="regDate" property="regDate" javaType="java.sql.Date"/>
+        <result column="email" property="email"/>
+        <result column="phone" property="phone"/>
+        <result column="image" property="image"/>
+        <result column="IDcard" property="IDcard"/>
+        <result column="state" property="state"/>
+        <result column="grade" property="grade"/>
+    </resultMap>
+
+
+    <select id="findOneByPropID" parameterType="java.lang.String" resultMap="baseMap" >
+
+        select * from bookcustomer
+
+        <where>
+            id =#{id}
+        </where>
+
+    </select>
+
+    <!--模糊查询功能-->
+    <select id="findByProp" parameterType="java.util.Map" resultMap="baseMap">
+
+        select * from bookcustomer
+
+        <where>
+            <if test="id!=null">
+                id like concat('%',concat(#{id},'%'))
+            </if>
+            <if test="realname!=null">
+                and realname like concat('%',concat(#{realname},'%'))
+            </if>
+            <if test="username!=null">
+                and username like concat('%',concat(#{username},'%'))
+            </if>
+            <if test="password!=null">
+                and password like concat('%',concat(#{password},'%'))
+            </if>
+            <if test="address!=null">
+                and address like concat('%',concat(#{address},'%'))
+            </if>
+            <if test="gender!=null">
+                and gender like concat('%',concat(#{gender},'%'))
+            </if>
+            <if test="regDate!=null">
+                and regDate like concat('%',concat(#{regDate},'%'))
+            </if>
+            <if test="email!=null">
+                and email like concat('%',concat(#{email},'%'))
+            </if>
+            <if test="phone!=null">
+                and phone like concat('%',concat(#{phone},'%'))
+            </if>
+            <if test="image!=null">
+                and image like concat('%',concat(#{image},'%'))
+            </if>
+            <if test="phone!=null">
+                and phone like concat('%',concat(#{phone},'%'))
+            </if>
+            <if test="IDcard!=null">
+                and IDcard like concat('%',concat(#{IDcard},'%'))
+            </if>
+            <if test="state!=null">
+                and state like concat('%',concat(#{state},'%'))
+            </if>
+            <if test="grade!=null">
+                and grade like concat('%',concat(#{grade},'%'))
+            </if>
+
+        </where>
+
+    </select>
+
+    <!--精确查询功能-->
+    <select id="findOneByProp" parameterType="java.util.Map" resultMap="baseMap">
+
+        select * from bookcustomer
+
+        <where>
+            <if test="id!=null">
+                id =#{id}
+            </if>
+            <if test="realname!=null">
+                and realname =#{realname}
+            </if>
+            <if test="username!=null">
+                and username =#{username}
+            </if>
+            <if test="password!=null">
+                and password =#{password}
+            </if>
+            <if test="address!=null">
+                and address =#{address}
+            </if>
+            <if test="gender!=null">
+                and gender =#{gender}
+            </if>
+            <if test="regDate!=null">
+                and regDate =#{regDate}
+            </if>
+            <if test="email!=null">
+                and email =#{email}
+            </if>
+            <if test="phone!=null">
+                and phone =#{phone}
+            </if>
+            <if test="image!=null">
+                and image =#{image}
+            </if>
+            <if test="IDcard!=null">
+                and IDcard =#{IDcard}
+            </if>
+            <if test="state!=null">
+                and state =#{state}
+            </if>
+            <if test="grade!=null">
+                and grade =#{grade}
+            </if>
+        </where>
+
+    </select>
+
+    <!--添加功能-->
+    <insert id="add" parameterType="com.example.demo.dto.Customer">
+        INSERT INTO
+        bookcustomer
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="realname!=null">
+                realname,
+            </if>
+            <if test="username!=null">
+                username,
+            </if>
+            <if test="password!=null">
+                password,
+            </if>
+            <if test="address!=null">
+                address,
+            </if>
+            <if test="gender!=null">
+                gender,
+            </if>
+            <if test="regDate!=null">
+                regDate,
+            </if>
+
+            <if test="email!=null">
+                email,
+            </if>
+            <if test="phone!=null">
+                phone,
+            </if>
+            <if test="image!=null">
+                image,
+            </if>
+            <if test="IDcard!=null">
+                IDcard,
+            </if>
+            <if test="state!=null">
+                state,
+            </if>
+            <if test="grade!=null">
+                grade
+            </if>
+
+        </trim>
+        <trim prefix="  values(" suffix=")" suffixOverrides=",">
+            <if test="realname!=null">
+                #{realname},
+            </if>
+            <if test="username!=null">
+                #{username},
+            </if>
+            <if test="password!=null">
+                #{password},
+            </if>
+            <if test="address!=null">
+                #{address},
+            </if>
+            <if test="gender!=null">
+                #{gender},
+            </if>
+            <if test="regDate!=null">
+                #{regDate},
+            </if>
+            <if test="email!=null">
+                #{email},
+            </if>
+            <if test="phone!=null">
+                #{phone},
+            </if>
+            <if test="image!=null">
+                #{image},
+            </if>
+            <if test="IDcard!=null">
+                #{IDcard},
+            </if>
+            <if test="state!=null">
+                #{state},
+            </if>
+            <if test="grade!=null">
+                #{grade}
+            </if>
+
+        </trim>
+    </insert>
+
+    <!--修改功能-->
+    <update id="update" parameterType="com.example.demo.dto.Customer">
+        UPDATE
+        bookcustomer
+        <set>
+            <if test="realname!=null">
+                realname=#{realname},
+            </if>
+            <if test="username!=null">
+                username=#{username},
+            </if>
+            <if test="password!=null">
+                password=#{password},
+            </if>
+            <if test="address!=null">
+                address=#{address},
+            </if>
+            <if test="gender!=null">
+                gender=#{gender},
+            </if>
+            <if test="regDate!=null">
+                regDate=#{regDate},
+            </if>
+
+            <if test="email!=null">
+                email=#{email},
+            </if>
+            <if test="phone!=null">
+                phone=#{phone},
+            </if>
+            <if test="image!=null">
+                image=#{image},
+            </if>
+            <if test="IDcard!=null">
+                IDcard=#{IDcard},
+            </if>
+            <if test="state!=null">
+                state=#{state},
+            </if>
+            <if test="grade!=null">
+                grade=#{grade}
+            </if>
+        </set>
+        WHERE id=#{id}
+    </update>
+    <!--通过id删除-->
+    <delete id="delete" parameterType="java.lang.String">
+        delete FROM
+        bookcustomer
+        WHERE
+        id=#{id}
+    </delete>
+    <!--批量删除-->
+    <delete id="deleteAll" parameterType="list">
+        delete from bookcustomer where id in
+        <foreach collection="list" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>
